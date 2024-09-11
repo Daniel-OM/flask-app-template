@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style layout-navbar-fixed layout-wide " dir="ltr"
+	data-assets-path="{{ url_for('static',filename='sneat/assets/') }}" data-theme="theme-default" data-style="light">
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+		<title>{% block title%}Page Title{% endblock %}</title>
+
+		<script src="{{ url_for('static',filename='js/utils.js') }}"></script>
+		 
+		{% block styles %}{% endblock %}
+		
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/custom.css') }}" />
+
+	</head>
+
+	<body id="top">
+
+		<!-- main --><!-- Sections:Start -->
+		<div>
+			{% block content %}{% endblock %}
+		</div>
+		<!-- / Sections:End -->
+		
+		{% if footer %}
+			<!-- Footer: Start -->
+			<footer>
+				<div>
+					<span class="footer-bottom-text">Copyright © 2022-
+						<script>document.write(new Date().getFullYear());</script>
+					</span>
+					<a href="https://onemade.es" target="_blank" class="text-white">OneMade</a>
+				</div>
+			</footer>
+			<!-- Footer: End -->
+		{% endif %}
+		
+		{% block scripts %}{% endblock %}
+		
+	</body>
+		
+</html>
