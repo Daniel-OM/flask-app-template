@@ -15,7 +15,7 @@ This is a template for a basic flask application
 - [Contribuciones](#contribuciones)
 - [Licencia](#licencia)
 
----
+
 
 ## Características
 
@@ -26,7 +26,7 @@ This is a template for a basic flask application
 - Plantillas HTML listas para personalización con Jinja2.
 - Listo para añadir rutas, modelos y vistas.
 
----
+
 
 ## Requisitos
 
@@ -45,7 +45,7 @@ Antes de empezar, asegúrate de tener instalados los siguientes elementos:
 - smtplib
 - email
 
----
+
 
 ## Instalación
 
@@ -85,7 +85,7 @@ Sigue estos pasos para clonar e instalar la aplicación en tu entorno local:
     flask db upgrade
     ```
 
----
+
 
 ## Estructura del proyecto
 
@@ -127,7 +127,6 @@ repository/
 ```
 
 
----
 
 ## Uso
 
@@ -137,7 +136,7 @@ Para ejecutar la aplicación, activa el entorno y usa el siguiente comando desde
 
 Para ver la aplicación abre tu navegador y accede a http://127.0.0.1:5000
 
----
+
 
 ## Pruebas
 Para ejecutar las pruebas, usa el comando:
@@ -146,7 +145,7 @@ Para ejecutar las pruebas, usa el comando:
 
 Las pruebas están en el directorio `tests/` y cubren (rutas, modelos, etc.).
 
----
+
 
 ## Despliegue
 ### Producción
@@ -170,7 +169,7 @@ Las pruebas están en el directorio `tests/` y cubren (rutas, modelos, etc.).
 
 El proyecto puede ser desplegado fácilmente en plataformas como Heroku, AWS, o Render.
 
----
+
 
 ## Contribuciones
 
@@ -181,7 +180,7 @@ Las contribuciones son bienvenidas. Sigue estos pasos:
 3. Haz tus cambios y súbelos (`git push origin feature/nueva-funcionalidad`).
 4. Crea un Pull Request.
 
----
+
 
 ## Licencia
 
