@@ -1,13 +1,17 @@
 
 from flask import Flask
 from flask_admin import Admin
+from flask_compress import Compress
+from flask_cors import CORS
 
-from .views import main_views, user_views
-from .login import login_manager
 from .config import config
-from .models import db, migrate, Role, User
-# from flask_admin.contrib.sqla import ModelView
-from .adminviews import RoleAdmin, UserAdmin
+from .backend.login import login_manager
+from .backend.models import db, migrate
+from .backend.api.pages import pages_api
+from .backend.api.user import user_api
+from .backend.api.role import role_api
+
+# flask --app backend.app run --reload
 
 # Create App
 application: Flask = Flask(import_name=__name__, instance_relative_config=True)
@@ -15,22 +19,22 @@ application.config.from_mapping(mapping=config)
 
 application.jinja_env.auto_reload = True
 
-application.register_blueprint(blueprint=main_views, url_prefix='/')
-application.register_blueprint(blueprint=user_views, url_prefix='/user')
+application.register_blueprint(blueprint=pages_api, url_prefix='/')
+application.register_blueprint(blueprint=user_api, url_prefix='/api/user')
+application.register_blueprint(blueprint=role_api, url_prefix='/api/role')
 
 
 login_manager.init_app(app=application)
 db.init_app(app=application)
 migrate.init_app(app=application, db=db)
+compress = Compress()
+compress.init_app(app=application)
+cors = CORS()
+cors.init_app(app=application, supports_credentials=True)
 
 # with application.app_context():
 #     db.create_all()
 #     db.session.commit()
-
-admin: Admin = Admin(app=application, name='Admin Panel', template_mode='bootstrap4')
-# Register the models with Flask-Admin
-admin.add_view(view=RoleAdmin(model=Role, session=db.session))
-admin.add_view(view=UserAdmin(model=User, session=db.session))
 
 
 if __name__ == '__main__':

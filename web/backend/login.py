@@ -3,7 +3,7 @@ from flask_login import LoginManager, UserMixin
 from .models import User
 
 login_manager = LoginManager()
-login_manager.login_view = 'views.login'
+login_manager.login_view = 'pages_api.login'
 
 class UserLogin(UserMixin):
     pass
