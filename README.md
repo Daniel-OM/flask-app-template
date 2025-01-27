@@ -2,39 +2,39 @@
 This is a template for a basic flask application
 
 
-## Tabla de Contenidos
+## Table of Contents
 
-- [Características](#características)
-- [Requisitos](#requisitos)
-- [Instalación](#instalación)
-- [Estructura del Proyecto](#estructura-del-proyecto)
-- [Uso](#uso)
-- [Pruebas](#pruebas)
-- [Despliegue](#despliegue)
-- [Contribuciones](#contribuciones)
-- [Licencia](#licencia)
-
-
-
-## Características
-
-- Estructura modular para aplicaciones Flask.
-- Integración con SQLAlchemy para la gestión de bases de datos.
-- Configuración sencilla para entornos de desarrollo y producción.
-- Soporte para migraciones de bases de datos con Flask-Migrate.
-- Plantillas HTML listas para personalización con Jinja2.
-- Listo para añadir rutas, modelos y vistas.
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Project Structure](#project-structure)
+- [Usage](#usage)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
 
 
-## Requisitos
+## Features
 
-Antes de empezar, asegúrate de tener instalados los siguientes elementos:
+- Modular structure for Flask applications.
+- Integration with SQLAlchemy for database management.
+- Simple configuration for development and production environments.
+- Database migrations support using Flask-Migrate.
+- Ready-to-use HTML templates with Jinja2.
+- Prepared for adding routes, models, and views.
+
+
+
+## Requirements
+
+Before starting, ensure you have the following installed:
 
 - Python >= 3.10.
 - pip
-- Virtualenv (opcional, recomendado para entornos aislados).
-- Flask >= 2.x
+- Virtualenv (optional but recommended for isolated environments).
+- Flask >= 3.x
 - Flask-SQLAlchemy
 - Flask-Migrate
 - Flask-Login
@@ -46,38 +46,38 @@ Antes de empezar, asegúrate de tener instalados los siguientes elementos:
 
 
 
-## Instalación
+## Installation
 
-Sigue estos pasos para clonar e instalar la aplicación en tu entorno local:
+Follow these steps to clone and install the application locally:
 
-1. Clonar el repositorio:
+1. Clone the repository:
    ```
    git clone https://github.com/Daniel-OM/flask-app-template.git
    cd flask-app-template
    ```
 
-2. Crear y activar un entorno virtual:
+2. Create and activate a virtual environment:
     ```
     python -m venv venv
     source venv/bin/activate  # En Windows: venv\Scripts\activate
     ```
 
-3. Instalar las dependencias
+3. Install dependencies:
     ```
     pip install -r requirements.txt
     ```
 
-4. Configurar las variables de entorno (crea un archivo `.env` si es necesario):
+4. Configure environment variables (create a `.env` file if needed):
     ```
     FLASK_APP=web/app.py
     FLASK_ENV=development
-    SECRET_KEY=tu_clave_secreta
-    DATABASE_URI=sqlite:///app.db  # Cambiar según el sistema de base de datos
+    SECRET_KEY=your_secret_key
+    DATABASE_URI=sqlite:///app.db  # Change according to your database
     ```
 
-5. Configurar el archivo de configuración de la aplicación (`web/config.py`).
+5. Configure the application settings in (`web/config.py`).
 
-6. Inicializar la base de datos (si aplica):
+6. Initialize the database (if applicable):
     ```
     flask db init
     flask db migrate
@@ -86,102 +86,102 @@ Sigue estos pasos para clonar e instalar la aplicación en tu entorno local:
 
 
 
-## Estructura del proyecto
+## Project Structure
 
 ```
 repository/
 │
-├── web/                    # Código principal de la aplicación
-│   ├── __init__.py         # Inicialización del paquete
-│   ├── migrations/         # Archivos de migraciones de la base de datos
-│   ├── backend/            # Archivos del backend de la aplicación
-|   |   ├── __init__.py     # Inicialización del paquete
-│   │   ├── api/            # Archivos de la api
-│   │   ├── database/       # Archivos de gestores de la base de datos
-│   │   ├── src/            # Código externo a la aplicación
-│   │   ├── login.py        # Incialización del módulo de login
-│   │   └── models.py       # Modelos de datos con SQLAlchemy
+├── web/                    # Main application code
+│   ├── __init__.py         # Package initialization
+│   ├── migrations/         # Database migration files
+│   ├── backend/            # Backend application files
+|   |   ├── __init__.py     # Package initialization
+│   │   ├── api/            # API files
+│   │   ├── database/       # Database management files
+│   │   ├── src/            # External application code
+│   │   ├── login.py        # Login module initialization
+│   │   └── models.py       # Data models using SQLAlchemy
 │   │   
-│   ├── frontend/           # Archivos del frontend de la aplicación
-|   |   ├── __init__.py     # Inicialización del paquete
-│   │   ├── static/         # Archivos de la api
-│   │   │   ├── css/        # Archivos CSS
-│   │   │   └── js/         # Archivos JavaScript
-│   │   └── templates/      # Archivos de gestores de la base de datos
+│   ├── frontend/           # Frontend application files
+|   |   ├── __init__.py     # Package initialization
+│   │   ├── static/         # Static files
+│   │   │   ├── css/        # CSS files
+│   │   │   └── js/         # JavaScript files
+│   │   └── templates/      # HTML templates
 │   │   
-│   ├── app.py              # Archivo principal de la aplicación
-│   ├── config.py           # Configuración para variables de entorno
-│   ├── web.ini             # Servidor
-│   └── wsgi.py             # Para subrutas
+│   ├── app.py              # Main application entry point
+│   ├── config.py           # Environment variables configuration
+│   ├── web.ini             # Server configuration
+│   └── wsgi.py             # WSGI entry point for subroutes
 │
-├── tests/                  # Tests para la aplicación
-│   ├── test_routes.py      # Pruebas de rutas
-│   └── test_models.py      # Pruebas de modelos
+├── tests/                  # Application tests
+│   ├── test_routes.py      # Routes testing
+│   └── test_models.py      # Models testing
 │
-├── .env                    # Variables de entorno (no subir a GitHub)
-├── .gitignore              # Ignorar archivos y carpetas innecesarias
-├── requirements.txt        # Dependencias del repositorio
-├── README.md               # Documentación del proyecto
-└── LICENSE                 # Licencia del repositorio
+├── .env                    # Environment variables (not to be uploaded to GitHub)
+├── .gitignore              # Ignore unnecessary files and folders
+├── requirements.txt        # Repository dependencies
+├── README.md               # Project documentation
+└── LICENSE                 # Repository license
 ```
 
 
 
-## Uso
+## Usage
 
-Para ejecutar la aplicación, activa el entorno y usa el siguiente comando desde la carpeta `web/`:
+To run the application, activate the virtual environment and use the following command from the `web/` directory:
 
     flask --app backend.app run --reload
 
-Para ver la aplicación abre tu navegador y accede a http://127.0.0.1:5000
+To view the application open your browser and access: http://127.0.0.1:5000
 
 
 
-## Pruebas
-Para ejecutar las pruebas, usa el comando:
+## Testing
+To run the tests, use the following command:
 
     pytest
 
-Las pruebas están en el directorio `tests/` y cubren (rutas, modelos, etc.).
+Tests are located in the `tests/` directory and cover routes, models, etc.
 
 
 
-## Despliegue
-### Producción
+## Deployment
+### Production
 
-1. Configura un servidor web como Gunicorn:
+1. Set up a web server with Gunicorn:
     ```
     pip install gunicorn
     gunicorn -w 4 -b 0.0.0.0:5000 app:app
     ```
 
-2. Configura un proxy inverso como Nginx para redirigir las solicitudes al servidor Flask.
+2. Configure a reverse proxy like Nginx to forward requests to the Flask server.
 
-3. Ajusta las variables de entorno:
+3. Adjust environment variables:
 
     ```
     FLASK_ENV=production
-    DATABASE_URI=<URI_de_tu_base_de_datos>
+    DATABASE_URI=<your_database_uri>
     ```
 
-### Servicios en la nube
+### Cloud Services
 
-El proyecto puede ser desplegado fácilmente en plataformas como Heroku, AWS, o Render.
-
-
-
-## Contribuciones
-
-Las contribuciones son bienvenidas. Sigue estos pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
-3. Haz tus cambios y súbelos (`git push origin feature/nueva-funcionalidad`).
-4. Crea un Pull Request.
+The project can easily be deployed on platforms like Heroku, AWS, or Render.
 
 
 
-## Licencia
+## Contributing
 
-Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).  
-Consulta el archivo `LICENSE` para más detalles.
+Contributions are welcome! Follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/nueva-funcionalidad`).
+3. Make your changes and push them (`git push origin feature/nueva-funcionalidad`).
+4. Create a Pull Request.
+
+
+
+## License
+
+This project is licensed under the [Licencia MIT](LICENSE).  
+See the `LICENSE` file for more details.
