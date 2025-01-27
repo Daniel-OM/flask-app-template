@@ -1,0 +1,14 @@
+alembic==1.13.0
+email
+Flask==3.0.2
+Flask-Admin==1.6.1
+Flask-Compress==1.17
+Flask-Cors==5.0.0
+Flask-Login==0.6.3
+Flask-Migrate==4.0.5
+Flask-SQLAlchemy==3.0.3
+gunicorn==21.0.1
+itsdangerous==2.1.2
+Jinja2==3.1.4
+smtplib
+werkzeug

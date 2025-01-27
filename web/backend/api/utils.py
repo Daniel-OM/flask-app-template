@@ -1,18 +1,11 @@
 
 import os
 import datetime as dt
-import pandas as pd
 
 from flask_login import current_user
 
 from ..models import db
 from ..api.user import UserManager
-
-def ensure_utc_index(df:pd.Index | pd.Series) -> pd.Index | pd.Series:
-    
-    df = pd.to_datetime(df, errors='coerce')  # Asegura formato datetime
-
-    return df.tz_localize('UTC', ambiguous='NaT', nonexistent='NaT') if not hasattr(df, 'tz') or df.tz is None else df.tz_convert('UTC')
 
 def inject_variables(user:bool=True) -> dict:
     return {

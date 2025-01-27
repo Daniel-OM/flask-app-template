@@ -1,6 +1,5 @@
 
 import functools
-import enum
 
 
 def log_trace(message:str) -> None:

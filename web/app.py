@@ -1,6 +1,5 @@
 
 from flask import Flask
-from flask_admin import Admin
 from flask_compress import Compress
 from flask_cors import CORS
 
@@ -10,8 +9,6 @@ from .backend.models import db, migrate
 from .backend.api.pages import pages_api
 from .backend.api.user import user_api
 from .backend.api.role import role_api
-
-# flask --app backend.app run --reload
 
 # Create App
 application: Flask = Flask(import_name=__name__, instance_relative_config=True)
