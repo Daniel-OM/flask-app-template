@@ -11,7 +11,8 @@ from .backend.api.user import user_api
 from .backend.api.role import role_api
 
 # Create App
-application: Flask = Flask(import_name=__name__, instance_relative_config=True)
+application: Flask = Flask(import_name=__name__, instance_relative_config=True
+                           static_folder='frontend/static', template_folder='frontend/html')
 application.config.from_mapping(mapping=config)
 
 application.jinja_env.auto_reload = True
@@ -40,7 +41,7 @@ if __name__ == '__main__':
     db.engine.echo = True
     application.config['SQLALCHEMY_ECHO'] = True
 
-    application.run(port=5001, debug=True)
+    application.run(port=5001, debug=True, threaded=True)
 
 
     '''

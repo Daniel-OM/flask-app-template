@@ -6,15 +6,15 @@ from flask_sqlalchemy import SQLAlchemy
 
 from ...config import config, serializer, email_config
 from ...backend.models import User, Role
-from .utils import ManagerTemplate, DBResponse, entityToDict
+from .utils import ViewModelTemplate, ViewModelResponse, entityToDict
 from ...backend.src.email_send import EmailSender
 
-class UserManager(ManagerTemplate):
+class UserViewModel(ViewModelTemplate):
     
     def __init__(self, db:SQLAlchemy) -> None:
         super().__init__(db=db)
 
-    def get(self, unwanted_keys:list=['_sa_instance_state']) -> DBResponse:
+    def get(self, unwanted_keys:list=['_sa_instance_state']) -> ViewModelResponse:
         
         try:
             entity: tuple[User, Role] = self.db.session.query(User, Role) \
@@ -24,19 +24,19 @@ class UserManager(ManagerTemplate):
             user: dict = {**entityToDict(entity=entity[0],hidden_fields=unwanted_keys),
                           **{'role': entityToDict(entity=entity[1],hidden_fields=unwanted_keys)}}
             
-            response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=True, description='Users obtained.',
                                                 data=user)
             
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=e,
                                                 data={})
         
         return response
 
     def post(self, email:str, password:str, first_name:str, username:str,
-            last_name:str=None, role_id:int=2, active:bool=True) -> DBResponse:
+            last_name:str=None, role_id:int=2, active:bool=True) -> ViewModelResponse:
         
         try:
             new_user: User = User(
@@ -51,17 +51,17 @@ class UserManager(ManagerTemplate):
             self.db.session.add(instance=new_user)
             self.commit()
             
-            response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=True, description='User registered.',
                                                 data=new_user.id)    
             
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=e)
         
         return response
     
-    def login(self, email:str, password:str) -> DBResponse:
+    def login(self, email:str, password:str) -> ViewModelResponse:
         
         try:
             user: User = self.db.session.query(User).filter(User.email == email.lower()).first()
@@ -69,35 +69,35 @@ class UserManager(ManagerTemplate):
             if user:
                 if check_password_hash(pwhash=user.password, password=password):
                     login_user(user=user, remember=True)
-                    response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+                    response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                     executed=True, description='User logged.')
                 else:
-                    response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+                    response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                     executed=False, description='Bad password.')   
             else:
-                response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+                response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=False, description='No user found.')    
             
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=e)
         
         return response
     
-    def logout(self) -> DBResponse:
+    def logout(self) -> ViewModelResponse:
         
         try:
             logout_user()
-            response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=True, description='User logged out.')    
             
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=e)
         
         return response
 
-    def checkByUser(self, id:int=None, username:str=None, email:str=None) -> DBResponse:
+    def checkByUser(self, id:int=None, username:str=None, email:str=None) -> ViewModelResponse:
         
         try:
             exists: dict[str, bool] = {}
@@ -117,19 +117,19 @@ class UserManager(ManagerTemplate):
                                             hidden_fields=['_sa_instance_state', 'password'])
                 exists['email'] = entity is not None
             
-            response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=True, description='User checked.',
                                                 data=exists)
             
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=e,
                                                 data=None)
         
         return response
     
     def getById(self, id:int=None, email:str=None, username:str=None, 
-                unwanted_keys:list=['_sa_instance_state']) -> DBResponse:
+                unwanted_keys:list=['_sa_instance_state']) -> ViewModelResponse:
         
         try:
             if username is not None:
@@ -149,19 +149,19 @@ class UserManager(ManagerTemplate):
             user: dict = {**entityToDict(entity=entity[0],hidden_fields=unwanted_keys),
                           **{'role': entityToDict(entity=entity[1],hidden_fields=unwanted_keys)}}
             
-            response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=True, description='User details obtained.',
                                                 data=user)
             
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=e,
                                                 data={})
         
         return response
 
     def update(self, form:dict={}, id:int|None=None, email:str=None, password:str=None, name:str=None, 
-                surname:str=None, role_id:int=None, active:bool=None) -> DBResponse:
+                surname:str=None, role_id:int=None, active:bool=None) -> ViewModelResponse:
         
         try:
             data: dict = form
@@ -176,18 +176,18 @@ class UserManager(ManagerTemplate):
             self.db.session.query(User).filter(User.id == current_user.id if id is None else id).update(data)
             self.commit()
 
-            response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=True, description='User updated.',
                                                 data=self.getById(id=current_user.id).data)    
             
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=f'Your account couldn\'t be updated. Error:{e}',
                                                 data={})
         
         return response
     
-    def delete(self, id:int|None=None, permanent:bool=False) -> DBResponse:
+    def delete(self, id:int|None=None, permanent:bool=False) -> ViewModelResponse:
         
         try:
             id = current_user.id if id is None else id
@@ -199,16 +199,16 @@ class UserManager(ManagerTemplate):
 
             self.logout()
 
-            response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=True, description=f"Account deleted.")    
             
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=f'Your account couldn\'t be deleted. Error:{e}')
 
         return response
     
-    def forgotPassword(self, email:str) -> DBResponse:
+    def forgotPassword(self, email:str) -> ViewModelResponse:
         
         try:
             # user: User = User.query.filter_by(email=email.lower()).first()
@@ -222,18 +222,18 @@ class UserManager(ManagerTemplate):
                 sender.send(message=f'Click the link to reset the password: {request.root_url}{reset_link}', 
                         subject='Omika Reset password', destinatary=[user.email], files=[])
                 sender.logout()
-                response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+                response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                     executed=True, description='Email sent with the password reset link.')  
             else:
-                response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+                response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                     executed=False, description='There is no user with that email.')
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=str(e))
             
         return response
     
-    def resetPassword(self, token:str=None, password:str=None) -> DBResponse:
+    def resetPassword(self, token:str=None, password:str=None) -> ViewModelResponse:
 
         try:
             if token is not None:
@@ -241,7 +241,7 @@ class UserManager(ManagerTemplate):
             elif current_user.is_authenticated:
                 email = current_user.email
         except:
-            return DBResponse(status=DBResponse.Status.SUCCESS, 
+            return ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                             executed=False, description='The reset link is not valid or has expired.')  
             
         if password is not None:
@@ -251,20 +251,20 @@ class UserManager(ManagerTemplate):
                 })
                 self.commit()
                 
-                response: DBResponse =  DBResponse(status=DBResponse.Status.SUCCESS, 
+                response: ViewModelResponse =  ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                     executed=True, description='Password changed.')
             
             except Exception as e:
-                response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+                response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                     executed=False, description=f'Error changing the password. Try again. ({e})')
 
         else:
-            response: DBResponse =  DBResponse(status=DBResponse.Status.SUCCESS, 
+            response: ViewModelResponse =  ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=False, description=False)  
         
         return response
     
-    def verify(self, token:str, commit:bool=True) -> DBResponse:
+    def verify(self, token:str, commit:bool=True) -> ViewModelResponse:
 
         try:
             email = serializer.loads(s=token, salt='verify-email', max_age=3600)  # Token válido durante 1 hora
@@ -273,35 +273,35 @@ class UserManager(ManagerTemplate):
                 self.db.session.query(User).filter(User.email == email) \
                         .update(values={'verified': True if 'postgresql' in config['SQLALCHEMY_DATABASE_URI'] else 1})
                 if commit: self.commit()
-                response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+                response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                             executed=True, description='User verified.')    
             except Exception as e:
-                response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+                response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=False, description=str(e))    
             
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=str(e))
 
         return response
 
-    def isVerified(self, email:str) -> DBResponse:
+    def isVerified(self, email:str) -> ViewModelResponse:
 
         try:
             user: User = self.db.session.query(User).filter(User.email == email).first()
             if user is None:
-                response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+                response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                             executed=False, description='User not registered.', data=False)
             else:
                 if user.verified:
-                    response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+                    response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=True, description='User verified.', data=True)    
                 else:
-                    response: DBResponse = DBResponse(status=DBResponse.Status.SUCCESS, 
+                    response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.SUCCESS, 
                                                 executed=False, description='User not verified.', data=False)    
             
         except Exception as e:
-            response: DBResponse = DBResponse(status=DBResponse.Status.ERROR, 
+            response: ViewModelResponse = ViewModelResponse(status=ViewModelResponse.Status.ERROR, 
                                                 executed=False, description=str(e))
 
         return response

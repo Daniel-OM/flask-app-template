@@ -97,7 +97,7 @@ repository/
 │   ├── backend/            # Backend application files
 |   |   ├── __init__.py     # Package initialization
 │   │   ├── api/            # API files
-│   │   ├── database/       # Database management files
+│   │   ├── viewmodels/     # Database management files
 │   │   ├── src/            # External application code
 │   │   ├── login.py        # Login module initialization
 │   │   └── models.py       # Data models using SQLAlchemy
@@ -107,7 +107,7 @@ repository/
 │   │   ├── static/         # Static files
 │   │   │   ├── css/        # CSS files
 │   │   │   └── js/         # JavaScript files
-│   │   └── templates/      # HTML templates
+│   │   └── html/           # HTML templates
 │   │   
 │   ├── app.py              # Main application entry point
 │   ├── config.py           # Environment variables configuration

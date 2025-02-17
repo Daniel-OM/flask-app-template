@@ -27,7 +27,7 @@ def entityToDict(entity, hidden_fields:list=[]) -> (None | dict):
         if entity != None else None
         
 
-class DBResponse:
+class ViewModelResponse:
 
     class Status(enum.Enum):
         SUCCESS: str = 'success'
@@ -48,7 +48,7 @@ class DBResponse:
             'data': self.data
         }
 
-class ManagerTemplate:
+class ViewModelTemplate:
     
     def __init__(self, db:SQLAlchemy) -> None:
         self.db: SQLAlchemy = db
