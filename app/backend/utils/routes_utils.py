@@ -5,7 +5,7 @@ import datetime as dt
 from flask_login import current_user
 
 from ..models import db
-from ..api.user import UserManager
+from ..routes.user import UserManager
 
 def inject_variables(user:bool=True) -> dict:
     return {
